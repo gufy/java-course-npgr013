@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="cut" default="run" basedir=".">
+    <property name="classDir" location="class"/>
+        
+    <target name="create dir">
+        <mkdir dir="${classDir}"/>
+        <echo message="Vytvarim adresare"/>
+    </target>
+
+    <target name="delete dir">
+        <delete>
+            <fileset dir="${classDir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </delete>
+
+        <echo message="Odstranuji adresare"/>
+    </target>
+
+    <target name="compile" depends="create dir">
+        <javac srcdir="src" destdir="${classDir}" includes="**/*.java"/>
+        <echo message="Kompiluji zdrojove kody"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="cz.cuni.mff.ms.urtax.goophy.cvika.cut.Cut" classpath="${classDir}"/>
+        <echo message="Spoustim aplikaci"/>
+    </target>
+
+    <target name="create jar" depends="compile">
+        <jar destfile="cut.jar">
+
+            <fileset dir="${classDir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="cz.cuni.mff.ms.urtax.goophy.cvika.cut.Cut"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run jar" depends="create jar">
+
+        <java jar="cut.jar"/>
+        <echo message="Spoustim aplikaci z JARu"/>
+    </target>
+    
+    <property environment="env"/>
+    
+    <target name="print env">
+        <echo message="${env.PATH}"/>
+    </target>
+
+</project>
